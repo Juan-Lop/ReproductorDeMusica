@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}PlayOn - Reproductor de Música{% endblock %}
+
+{% block content %}
+<div class="music-player">
+    <header class="player-header">
+        <div class="header-content">
+            <h1 class="app-title">
+                <!-- Cambiando a un ícono más moderno y elegante -->
+                <svg class="app-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3V21M9 9L12 6L15 9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                PlayOn
+            </h1>
+            <div class="header-actions">
+                <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-plus"></i>
+                    Subir Música
+                </button>
+                <input type="file" id="fileInput" accept=".mp3,.wav,.ogg,.m4a" multiple style="display: none;">
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-area">
+            <section class="now-playing">
+                <div class="album-art" id="mainAlbumArt">
+                    <img id="mainAlbumImage" style="display: none;" alt="Album Art">
+                    <div class="album-placeholder" id="mainAlbumPlaceholder">
+                        <i class="fas fa-music"></i>
+                    </div>
+                </div>
+                <div class="song-info">
+                    <h2 class="song-title">Selecciona una canción</h2>
+                    <p class="song-artist">Artista</p>
+                </div>
+            </section>
+
+            <section class="playlist-section">
+                <div class="section-header">
+                    <h3>Lista de Reproducción</h3>
+                    <span class="song-count">0 canciones</span>
+                </div>
+                <div class="playlist-container">
+                    <div class="playlist-empty" id="playlistEmpty">
+                        <i class="fas fa-music"></i>
+                        <p>Tu playlist está vacía</p>
+                        <p>Sube algunas canciones para comenzar</p>
+                    </div>
+                    <ul class="playlist" id="playlist" data-sortable="true"></ul>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="player-controls">
+        <div class="controls-container">
+            <div class="current-song-info">
+                <div class="current-album-art">
+                    <!-- Actualizando ícono en la barra inferior para consistencia -->
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3V21M9 9L12 6L15 9M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M8 14L12 10L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="current-song-details">
+                    <span class="current-title">PlayOn</span>
+                    <span class="current-artist">Reproductor de Música</span>
+                </div>
+            </div>
+
+            <div class="main-controls">
+                <div class="control-buttons">
+                    <button class="control-btn" id="prevBtn">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="control-btn play-pause" id="playPauseBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="control-btn" id="nextBtn">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                </div>
+                <div class="progress-container">
+                    <span class="time-current">0:00</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                        <div class="progress-handle"></div>
+                    </div>
+                    <span class="time-total">0:00</span>
+                </div>
+            </div>
+
+            <div class="volume-controls">
+                <button class="control-btn" id="volumeBtn">
+                    <i class="fas fa-volume-up"></i>
+                </button>
+                <div class="volume-slider">
+                    <input type="range" id="volumeRange" min="0" max="100" value="50">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <audio id="audioPlayer" preload="metadata"></audio>
+</div>
+
+<div class="modal" id="uploadModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Subir Canciones</h3>
+            <button class="modal-close" onclick="closeUploadModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Arrastra archivos aquí o haz clic para seleccionar</p>
+                <p class="upload-formats">Formatos soportados: MP3, WAV, OGG, M4A</p>
+            </div>
+            <div class="upload-progress" id="uploadProgress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">Subiendo...</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
